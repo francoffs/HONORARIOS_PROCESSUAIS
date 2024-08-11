@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Relatório Mensal</title>
+  <style> {{ stylesheet }}</style>
+</head>
+
+<body>
+  <h1 class="title">{{ tipo_relatorio }}</h1>
+  
+  <p class="subtitle">Relatório gerado em {{ dia }} às {{ hora }}</p>
+
+  <h2>{{ valores_cliente }}</h2>
+  {{ parcelas_vencidas }}
+
+  <h2>{{ valores_parcelas }}</h2>
+  {{ devedores }}
+  
+</body>
+
+</html>

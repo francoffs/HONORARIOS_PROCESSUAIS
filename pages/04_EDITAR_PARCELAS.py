@@ -3,7 +3,9 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, date
 
-from utilidades import leitura_dados
+from utilidades import leitura_dados, logo
+
+logo()
 
 leitura_dados()
 
@@ -45,10 +47,6 @@ elif float(soma_parcelas) == float(valor_honorários):
 elif float(soma_parcelas) < float(valor_honorários) and float(soma_parcelas) == 0:
     st.warning('ESTE CLIENTE NÃO POSSUI PARCELAMENTO REGISTRADO. CASO DESEJE PARCELAR OS HONORÁRIOS, ACESSE O BOTÃO **PARCELAR** NA GUIA LATERAL.')
 
-
-
-
-
 st.divider()
 
 if df_parcelas_cliente.empty:
@@ -68,7 +66,7 @@ else:
     with col2:
         quitação = st.selectbox('QUITAÇÃO:', ['PAGO', 'EM ABERTO'])
         if quitação == 'PAGO':
-            data_pagamento = st.date_input('DATA DO PAGAMENTO:', format= 'DD-MM-YYYY')
+            data_pagamento = st.date_input('DATA DO PAGAMENTO:')
             conta_depositada = st.text_input('CONTA DEPOSITADA:')
             forma_pagamento = st.selectbox('FORMA DE PAGAMENTO:', ['PIX', 'DINHEIRO', 'DEPÓSITO BANCÁRIO', 'CARTÃO DE CRÉDITO', 'CARTÃO DE DÉBITO'])
         else:
@@ -91,6 +89,7 @@ else:
         df_parcelas.at[(parcela_selecionada, 'VALOR DA PARCELA')] = valor_da_parcela_editar
         
         df_parcelas.to_csv('parcelas.csv',decimal=',', sep=';', index=False)
+        
         st.rerun()
 
     st.divider()

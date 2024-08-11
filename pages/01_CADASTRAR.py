@@ -3,7 +3,9 @@ import streamlit as st
 import pandas as pd
 import re
 from datetime import date, datetime
-from utilidades import leitura_dados
+from utilidades import leitura_dados, logo
+
+logo()
 
 leitura_dados()
 
@@ -63,7 +65,7 @@ if adicionar_cliente:
     df_clientes.loc[index_adicionar] = lista_adicionar
     #caminho_datasets = st.session_state['caminho_datasets']
     df_clientes.to_csv('clientes.csv', decimal=',', sep=';')
-
+    st.warning('CLIENTE CADASTRADO COM SUCESSO!!!')
 
 #st.dataframe(df_clientes)
 #st.dataframe(df_parcelas)

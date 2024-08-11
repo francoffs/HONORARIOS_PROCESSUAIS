@@ -4,7 +4,9 @@ import pandas as pd
 from datetime import datetime
 import plotly.express as px
 
-from utilidades import leitura_dados
+from utilidades import leitura_dados, logo
+
+logo()
 
 leitura_dados()
 

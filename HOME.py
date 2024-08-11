@@ -1,7 +1,10 @@
 import streamlit as st
+from pathlib import Path
 
-
-st.sidebar.markdown('Desenvolvido por Farnei Franco Siqueira :sunglasses:')
+caminho_logo = Path(__file__).parent / 'assets'
+logo = str(caminho_logo / 'LOGO.png')
+st.image(logo,width=200)
+st.sidebar.markdown('Escritório de Advocacia MOHR & TONIAL - Direitos Reservados')
 
 st.markdown('# REGISTROS DE HONORÁRIOS')
 st.markdown('## Advogada MARTINA MOHR DA COSTA')

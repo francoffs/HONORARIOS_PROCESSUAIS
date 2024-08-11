@@ -2,9 +2,11 @@ from pathlib import Path
 import streamlit as st
 import pandas as pd
 
-from utilidades import leitura_dados
+from utilidades import leitura_dados, logo
 
+logo()
 leitura_dados()
+
 
 df_clientes = st.session_state['dados']['df_clientes']
 df_parcelas = st.session_state['dados']['df_parcelas']
@@ -79,6 +81,8 @@ if atualizar_cadastro:
     df_clientes.at[(Codigo_seleciondo, 'resumo_caso')] = resumo
     df_clientes.at[(Codigo_seleciondo, 'data_cadastro')] = data_cadastro_cliente
     df_clientes.to_csv('clientes.csv',decimal=',', sep=';')
+    st.warning('DADOS DO CLIENTE ATUALIZADOS COM SUCESSO!!!')
+    
 
 #st.dataframe(df_clientes)
 #st.dataframe(df_parcelas)

@@ -5,7 +5,9 @@ import pandas as pd
 from datetime import datetime
 
 
-from utilidades import leitura_dados
+from utilidades import leitura_dados, logo
+
+logo()
 
 leitura_dados()
 
@@ -14,11 +16,6 @@ df_parcelas = st.session_state['dados']['df_parcelas']
 
 # Definilçaão dos índices das tabelas. Somente para acompanhar. 
 # Apagar ao final
-
-cliente_indez = df_clientes.index.name
-st.write(cliente_indez)
-parcelas_indez = df_parcelas.index.name
-st.write(parcelas_indez)
 
 # Seleção de clientes
 Lista_Clientes = sorted(df_clientes['nome'].unique())
@@ -89,23 +86,15 @@ if adicionar_parcelas:
         lista_adicionar.append(sublista)
     df_novas_parcelas = pd.DataFrame(lista_adicionar)
     lista_colunas = df_parcelas.columns.tolist()
-    #st.write(lista_colunas)    
+
     df_novas_parcelas.columns = lista_colunas
     st.dataframe(df_novas_parcelas)
-    st.dataframe(df_novas_parcelas)
-            #st.write(sublista)
+    
+
     df_parcelas = pd.concat([df_parcelas, df_novas_parcelas], axis=0, ignore_index=True)
     st.session_state['dados']['df_parcelas'] = df_parcelas
     df_parcelas.to_csv('parcelas.csv', decimal=',', sep=';', index=False)
+    st.warning('PARCELAMENTO REGISTRADO COM SUCESSO!!!')
         
         
-#st.dataframe(df_parcelas)
-#df_parcelas.to_csv('parcelas.csv', decimal=',', sep=';')        
 
-
-
-
-#st.write(i_adicionar)
-"""st.write(df_clientes)
-st.write(df_parcelas)
-"""
