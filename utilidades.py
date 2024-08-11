@@ -20,9 +20,10 @@ def leitura_dados():
 #def converte_datas(): 
 
 def formatar_valor(valor):
-    lingua = 'pt_BR.UTF-8'
-    locale.setlocale(locale.LC_ALL, lingua)
-    return locale.currency(valor, grouping=True)
+    # Converte o valor para string, com duas casas decimais, separadas por vírgula
+    valor_formatado = f"{valor:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+    # Adiciona o símbolo de moeda R$ no início
+    return f"R$ {valor_formatado}"
 
 def logo():
     caminho_logo = Path(__file__).parent / 'assets'
