@@ -8,6 +8,8 @@ from utilidades import leitura_dados, formatar_valor, logo
 import pdfkit
 import pypdf
 import os
+from weasyprint import HTML, CSS
+import PyPDF2
 
 logo()
 leitura_dados()
