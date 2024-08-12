@@ -92,18 +92,39 @@ if exportar:
     nome_relatorio = f'Relatório de parcelas vencidas.pdf'
     caminho_relatorio = pasta_output / nome_relatorio
 
-    caminho_exec = 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'
-    pdfkit_config = pdfkit.configuration(wkhtmltopdf=caminho_exec)
-    pdfkit.from_string(html, output_path=str(caminho_relatorio), configuration=pdfkit_config)
+    caminho_temp_pdf = pasta_output / "temp_relatorio.pdf"
+    HTML(string=html).write_pdf(str(caminho_temp_pdf), stylesheets=[CSS(string=css)])
 
     arquivo_layout = 'layout_relatorio.pdf'
     caminho_layout = pasta_assets / arquivo_layout
 
-    layout_pdf = pypdf.PdfReader(caminho_layout).pages[0]
-    pdf = pypdf.PdfWriter(clone_from=caminho_relatorio)
-    pdf.pages[0].merge_page(layout_pdf, over=True)
-    pdf.write(caminho_relatorio)
-    os.startfile(caminho_relatorio)
+    with open(caminho_temp_pdf, "rb") as temp_pdf_file, open(caminho_layout, "rb") as layout_pdf_file:
+        temp_pdf = PyPDF2.PdfReader(temp_pdf_file)
+        layout_pdf = PyPDF2.PdfReader(layout_pdf_file)
+
+        pdf_writer = PyPDF2.PdfWriter()
+
+        # Adicionar o layout como sobreposição na primeira página
+        temp_page = temp_pdf.pages[0]
+        layout_page = layout_pdf.pages[0]
+        temp_page.merge_page(layout_page)
+
+        pdf_writer.add_page(temp_page)
+
+        for page_num in range(1, len(temp_pdf.pages)):
+            pdf_writer.add_page(temp_pdf.pages[page_num])
+
+        with open(caminho_relatorio, "wb") as final_pdf_file:
+            pdf_writer.write(final_pdf_file)
+
+
+    with open(caminho_relatorio, "rb") as pdf_file:
+            st.download_button(
+                label="Baixar Relatório de Parcelas Vencidas",
+                data=pdf_file,
+                file_name=nome_relatorio,
+                mime="application/pdf",
+            )
 
 
 
