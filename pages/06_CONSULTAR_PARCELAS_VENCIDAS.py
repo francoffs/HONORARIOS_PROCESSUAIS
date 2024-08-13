@@ -5,8 +5,6 @@ from datetime import datetime, date
 import locale
 from jinja2 import FileSystemLoader, Environment
 from utilidades import leitura_dados, formatar_valor, logo
-import pdfkit
-import pypdf
 import os
 import base64
 
