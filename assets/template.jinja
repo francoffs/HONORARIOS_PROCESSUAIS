@@ -8,6 +8,7 @@
 </head>
 
 <body>
+  <img src="{{ logo_url }}" alt="Logotipo" style="width: 150px; height: auto;">
   <h1 class="title">{{ tipo_relatorio }}</h1>
   
   <p class="subtitle">Relatório gerado em {{ dia }} às {{ hora }}</p>
@@ -17,7 +18,11 @@
 
   <h2>{{ valores_parcelas }}</h2>
   {{ devedores }}
+  {{ bobagem }}
   
 </body>
 
 </html>
+
+<div class="linha-horizontal"></div>
+

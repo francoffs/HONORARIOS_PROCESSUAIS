@@ -48,3 +48,19 @@ h2, p {
     font-weight: 600;
     color: #232323;
 }
+
+.logo {
+    width: 150px;
+    height: 100px;
+    background-image: url('{{ logo_url }}');  /* Variável Jinja */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.linha-horizontal {
+    border-bottom: 2px solid #ad8d24;  /* Cor e espessura da linha */
+    margin: 20px 0;  /* Espaçamento acima e abaixo da linha */
+}
+
+

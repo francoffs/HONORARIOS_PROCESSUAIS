@@ -8,8 +8,8 @@ from utilidades import leitura_dados, formatar_valor, logo
 import pdfkit
 import pypdf
 import os
-from weasyprint import HTML, CSS
-import PyPDF2
+import base64
+
 
 logo()
 leitura_dados()
@@ -62,13 +62,22 @@ st.dataframe(df_parcelas_vencidas)
 if exportar:
     parcelas_vencidas_html = df_parcelas_vencidas.to_html(float_format=formatar_valor)
     devedores_html = df_devedores.to_html(float_format=formatar_valor)
-    html_conteudo = parcelas_vencidas_html + "<br>" + devedores_html
+    html_parcelas_vencidas = parcelas_vencidas_html + "<br>" + devedores_html
+    logotipo = Path(__file__).parents[1] / 'assets' / 'LOGO.png'
+    
+    with open(logotipo, "rb") as image_file:
+        encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+
+    with open('html_parcelas_vencidas', 'w') as arquivo:
+        arquivo.write(html_parcelas_vencidas)
 
     arquivo_template = 'template.jinja'
+    
 
     loader = FileSystemLoader(pasta_assets)
     environment = Environment(loader=loader)
     template = environment.get_template(arquivo_template)
+    
 
     template_vars = {
         'stylesheet': '',
@@ -79,54 +88,22 @@ if exportar:
         'hora':hora_atual,
         'parcelas_vencidas': parcelas_vencidas_html,
         'devedores': devedores_html,
+        'logo_url' : f"data:image/png;base64,{encoded_string}",
+        
     }
     arquivo_css = 'style.css'
+    template_css = environment.get_template(arquivo_css)
+    css_renderizado = template_css.render(logo_url=logotipo)  # Passando a variável logo_url
+
     with open(pasta_assets / arquivo_css) as arquivo: 
         css = arquivo.read()
 
     template_vars['stylesheet'] = css
     html = template.render(**template_vars)
 
-
-    pasta_output = Path('output')
-    pasta_output.mkdir(exist_ok=True, parents=True)
-
-    nome_relatorio = f'Relatório de parcelas vencidas.pdf'
-    caminho_relatorio = pasta_output / nome_relatorio
-
-    caminho_temp_pdf = pasta_output / "temp_relatorio.pdf"
-    HTML(string=html).write_pdf(str(caminho_temp_pdf), stylesheets=[CSS(string=css)])
-
-    arquivo_layout = 'layout_relatorio.pdf'
-    caminho_layout = pasta_assets / arquivo_layout
-
-    with open(caminho_temp_pdf, "rb") as temp_pdf_file, open(caminho_layout, "rb") as layout_pdf_file:
-        temp_pdf = PyPDF2.PdfReader(temp_pdf_file)
-        layout_pdf = PyPDF2.PdfReader(layout_pdf_file)
-
-        pdf_writer = PyPDF2.PdfWriter()
-
-        # Adicionar o layout como sobreposição na primeira página
-        temp_page = temp_pdf.pages[0]
-        layout_page = layout_pdf.pages[0]
-        temp_page.merge_page(layout_page)
-
-        pdf_writer.add_page(temp_page)
-
-        for page_num in range(1, len(temp_pdf.pages)):
-            pdf_writer.add_page(temp_pdf.pages[page_num])
-
-        with open(caminho_relatorio, "wb") as final_pdf_file:
-            pdf_writer.write(final_pdf_file)
-
-
-    with open(caminho_relatorio, "rb") as pdf_file:
-            st.download_button(
-                label="Baixar Relatório de Parcelas Vencidas",
-                data=pdf_file,
-                file_name=nome_relatorio,
-                mime="application/pdf",
-            )
-
-
-
+    html = template.render(**template_vars)
+    with open('html_parcelas_vencidas', 'w', encoding='utf-8') as arquivo:
+         arquivo.write(html)
+    
+    with open('html_parcelas_vencidas', 'r', encoding='utf-8') as arquivo:
+            st.download_button('Baixar relatório', arquivo, file_name='relatorio.html', mime='text/html')

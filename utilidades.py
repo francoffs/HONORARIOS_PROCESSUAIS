@@ -19,6 +19,7 @@ def leitura_dados():
    
 #def converte_datas(): 
 
+
 def formatar_valor(valor):
     # Converte o valor para string, com duas casas decimais, separadas por vírgula
     valor_formatado = f"{valor:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
