@@ -4,11 +4,11 @@ from pathlib import Path
 caminho_logo = Path(__file__).parent / 'assets'
 logo = str(caminho_logo / 'LOGO.png')
 st.image(logo,width=200)
-st.sidebar.markdown('Escritório de Advocacia MOHR & TONIAL - Direitos Reservados')
+st.sidebar.markdown('Escritório de Advocacia MARTINA MOHR - Direitos Reservados')
 
 st.markdown('# REGISTROS DE HONORÁRIOS')
 st.markdown('## Advogada MARTINA MOHR DA COSTA')
-st.markdown('## Advogado LUIS FERNANDO TONIAL')
+
 
 st.divider()
 
